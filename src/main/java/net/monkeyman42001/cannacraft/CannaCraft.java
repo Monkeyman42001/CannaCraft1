@@ -1,5 +1,8 @@
 package net.monkeyman42001.cannacraft;
 
+import net.minecraft.world.item.CreativeModeTabs;
+import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
+import net.monkeyman42001.cannacraft.item.CannacraftItems;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -49,7 +52,13 @@ public class CannaCraft {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
+        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(CannacraftItems.CANNABIS_SEED);
+            event.accept(CannacraftItems.NUG);
+        }
+        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
+            event.accept(CannacraftBlocks.GROW_TENT);
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

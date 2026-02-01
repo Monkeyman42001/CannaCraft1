@@ -3,6 +3,7 @@
  */
 package net.monkeyman42001.cannacraft.item;
 
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -17,7 +18,7 @@ import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
 import java.util.function.Function;
 
 public class CannacraftItems {
-	public static final DeferredRegister.Items REGISTRY = DeferredRegister.createItems(CannaCraft.MOD_ID);
+	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(CannaCraft.MOD_ID);
 	public static final DeferredItem<Item> CANNABIS_SEED;
 	public static final DeferredItem<Item> NUG;
 	public static final DeferredItem<Item> JOINT;
@@ -25,18 +26,18 @@ public class CannacraftItems {
 	public static final DeferredItem<Item> GROW_TENT;
 	public static final DeferredItem<Item> LIT_JOINT;
 	static {
-		CANNABIS_SEED = register("cannabis_seed", CannabisSeedItem::new);
-		NUG = register("nug", NugItem::new);
-		JOINT = register("joint", JointItem::new);
-		LIGHTER = register("lighter", LighterItem::new);
+		CANNABIS_SEED = ITEMS.register("cannabis_seed", () -> new Item(new Item.Properties()));
+		NUG = ITEMS.register("nug", () -> new Item(new Item.Properties()));
+		JOINT = ITEMS.register("joint", () -> new Item(new Item.Properties()));
+		LIGHTER = ITEMS.register("lighter", () -> new Item(new Item.Properties()));
 		GROW_TENT = block(CannacraftBlocks.GROW_TENT);
-		LIT_JOINT = register("lit_joint", LitJointItem::new);
+		LIT_JOINT = ITEMS.register("lit_joint", () -> new Item(new Item.Properties()));
 	}
 
 	// Start of user code block custom items
 	// End of user code block custom items
-	private static <I extends Item> DeferredItem<I> register(String name, Function<Item.Properties, ? extends I> supplier) {
-		return REGISTRY.registerItem(name, supplier, new Item.Properties());
+	private static void register(IEventBus eventBus) {
+		ITEMS.register(eventBus);
 	}
 
 	private static DeferredItem<Item> block(DeferredHolder<Block, Block> block) {
@@ -44,6 +45,6 @@ public class CannacraftItems {
 	}
 
 	private static DeferredItem<Item> block(DeferredHolder<Block, Block> block, Item.Properties properties) {
-		return REGISTRY.registerItem(block.getId().getPath(), prop -> new BlockItem(block.get(), prop), properties);
+		return ITEMS.registerItem(block.getId().getPath(), prop -> new BlockItem(block.get(), prop), properties);
 	}
 }
