@@ -16,6 +16,7 @@ public class GrowCannabisPlantProcedure {
 		BlockState stage2 = Blocks.AIR.defaultBlockState();
 		BlockState stage3 = Blocks.AIR.defaultBlockState();
 		BlockState stage4 = Blocks.AIR.defaultBlockState();
+		/*
 		stage0 = CannacraftBlocks.CANNABIS_PLANT_0.get().defaultBlockState();
 		stage1 = CannacraftBlocks.CANNABIS_PLANT_1.get().defaultBlockState();
 		stage2 = CannacraftBlocks.CANNABIS_PLANT_2.get().defaultBlockState();
@@ -53,12 +54,8 @@ public class GrowCannabisPlantProcedure {
 					_level.sendBlockUpdated(_bp, _bs, _bs, 3);
 			}
 		}
+
+		 */
 	}
 
-	private static double getBlockNBTNumber(LevelAccessor world, BlockPos pos, String tag) {
-		BlockEntity blockEntity = world.getBlockEntity(pos);
-		if (blockEntity != null)
-			return blockEntity.getPersistentData().getDoubleOr(tag, 0);
-		return -1;
-	}
 }
