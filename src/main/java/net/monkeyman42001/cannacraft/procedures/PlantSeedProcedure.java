@@ -21,7 +21,7 @@ import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.Minecraft;
 
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
-import net.monkeyman42001.cannacraft.block.CannacraftModBlocks;
+import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
 
 public class PlantSeedProcedure {
 	public static void execute(LevelAccessor world, double x, double y, double z, Entity entity, ItemStack itemstack) {
@@ -32,7 +32,7 @@ public class PlantSeedProcedure {
 		String seedStrain = "";
 		seedStrain = itemstack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getStringOr("strain", "");
 		seeds = new ItemStack(CannacraftItems.CANNABIS_SEED.get()).copy();
-		stage0 = CannacraftModBlocks.CANNABIS_PLANT_0.get().defaultBlockState();
+		stage0 = CannacraftBlocks.CANNABIS_PLANT_0.get().defaultBlockState();
 		if (stage0.canSurvive(world, BlockPos.containing(x, y + 1, z))) {
 			world.setBlock(BlockPos.containing(x, y + 1, z), stage0, 3);
 			if (!world.isClientSide()) {

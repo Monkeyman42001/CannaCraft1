@@ -7,7 +7,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
 import net.minecraft.core.BlockPos;
 
-import net.monkeyman42001.cannacraft.block.CannacraftModBlocks;
+import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
 
 public class GrowCannabisPlantProcedure {
 	public static void execute(LevelAccessor world, double x, double y, double z) {
@@ -16,11 +16,11 @@ public class GrowCannabisPlantProcedure {
 		BlockState stage2 = Blocks.AIR.defaultBlockState();
 		BlockState stage3 = Blocks.AIR.defaultBlockState();
 		BlockState stage4 = Blocks.AIR.defaultBlockState();
-		stage0 = CannacraftModBlocks.CANNABIS_PLANT_0.get().defaultBlockState();
-		stage1 = CannacraftModBlocks.CANNABIS_PLANT_1.get().defaultBlockState();
-		stage2 = CannacraftModBlocks.CANNABIS_PLANT_2.get().defaultBlockState();
-		stage3 = CannacraftModBlocks.CANNABIS_PLANT_3.get().defaultBlockState();
-		stage4 = CannacraftModBlocks.CANNABIS_PLANT_4.get().defaultBlockState();
+		stage0 = CannacraftBlocks.CANNABIS_PLANT_0.get().defaultBlockState();
+		stage1 = CannacraftBlocks.CANNABIS_PLANT_1.get().defaultBlockState();
+		stage2 = CannacraftBlocks.CANNABIS_PLANT_2.get().defaultBlockState();
+		stage3 = CannacraftBlocks.CANNABIS_PLANT_3.get().defaultBlockState();
+		stage4 = CannacraftBlocks.CANNABIS_PLANT_4.get().defaultBlockState();
 		if (getBlockNBTNumber(world, BlockPos.containing(x, y, z), "GrowthTime") <= 0) {
 			if ((world.getBlockState(BlockPos.containing(x, y, z))) == stage0 && true) {
 				world.setBlock(BlockPos.containing(x, y, z), stage1, 3);

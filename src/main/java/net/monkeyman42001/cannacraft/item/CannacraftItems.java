@@ -11,17 +11,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.BlockItem;
 
-import net.monkeyman42001.cannacraft.item.NugItem;
-import net.monkeyman42001.cannacraft.item.LitJointItem;
-import net.monkeyman42001.cannacraft.item.LighterItem;
-import net.monkeyman42001.cannacraft.item.JointItem;
-import net.monkeyman42001.cannacraft.item.CannabisSeedItem;
-import net.monkeyman42001.cannacraft.CannacraftMod;
+import net.monkeyman42001.cannacraft.CannaCraft;
+import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
 
 import java.util.function.Function;
 
 public class CannacraftItems {
-	public static final DeferredRegister.Items REGISTRY = DeferredRegister.createItems(CannacraftMod.MODID);
+	public static final DeferredRegister.Items REGISTRY = DeferredRegister.createItems(CannaCraft.MOD_ID);
 	public static final DeferredItem<Item> CANNABIS_SEED;
 	public static final DeferredItem<Item> NUG;
 	public static final DeferredItem<Item> JOINT;
@@ -33,7 +29,7 @@ public class CannacraftItems {
 		NUG = register("nug", NugItem::new);
 		JOINT = register("joint", JointItem::new);
 		LIGHTER = register("lighter", LighterItem::new);
-		GROW_TENT = block(CannacraftModBlocks.GROW_TENT);
+		GROW_TENT = block(CannacraftBlocks.GROW_TENT);
 		LIT_JOINT = register("lit_joint", LitJointItem::new);
 	}
 

@@ -2,7 +2,7 @@ package net.monkeyman42001.cannacraft.villager;
 
 import com.google.common.collect.ImmutableSet;
 import net.monkeyman42001.cannacraft.CannaCraft;
-import net.monkeyman42001.cannacraft.block.CannacraftModBlocks;
+import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
@@ -19,7 +19,7 @@ public class CannacraftModVillagers {
             DeferredRegister.create(BuiltInRegistries.VILLAGER_PROFESSION, CannaCraft.MOD_ID);
 
     public static final Holder<PoiType> DEALER_POI = POI_TYPES.register("dealer_poi",
-            () -> new PoiType(ImmutableSet.copyOf(CannacraftModBlocks.GROW_TENT.get().getStateDefinition().getPossibleStates()), 1, 1));
+            () -> new PoiType(ImmutableSet.copyOf(CannacraftBlocks.GROW_TENT.get().getStateDefinition().getPossibleStates()), 1, 1));
 
     public static final Holder<VillagerProfession> DEALER = VILLAGER_PROFESSIONS.register("dealer",
             () -> new VillagerProfession(Component.translatable("profession.cannacraft.dealer"), holder -> holder.value() == DEALER_POI.value(),
