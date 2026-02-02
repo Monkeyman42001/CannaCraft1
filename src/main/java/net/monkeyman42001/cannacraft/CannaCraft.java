@@ -63,7 +63,7 @@ public class CannaCraft {
             event.accept(CannacraftItems.NUG);
         }
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(CannacraftBlocks.GROW_TENT);
+            //event.accept(CannacraftBlocks.GROW_TENT);
         }
     }
 

@@ -23,7 +23,6 @@ public class CannacraftItems {
 	public static final DeferredItem<Item> NUG;
 	public static final DeferredItem<Item> JOINT;
 	public static final DeferredItem<Item> LIGHTER;
-	public static final DeferredItem<Item> GROW_TENT;
 	public static final DeferredItem<Item> LIT_JOINT;
 	static {
 		CANNABIS_SEED = ITEMS.register("cannabis_seed", () -> new Item(new Item.Properties()));
