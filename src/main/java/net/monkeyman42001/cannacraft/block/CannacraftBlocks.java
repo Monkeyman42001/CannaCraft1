@@ -5,6 +5,7 @@ package net.monkeyman42001.cannacraft.block;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.SoundType;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -29,7 +30,7 @@ public class CannacraftBlocks {
 	//public static final DeferredBlock<Block> CANNABIS_PLANT_3;
 	//public static final DeferredBlock<Block> CANNABIS_PLANT_4;
 	public static final DeferredBlock<Block> GROW_TENT = registerBlock("grow_tent",
-			() -> new Block(BlockBehaviour.Properties.of()));
+			() -> new Block(BlockBehaviour.Properties.of().sound(SoundType.GRAVEL).strength(1f, 10f)));
 
 		//CANNABIS_PLANT_0 = register("cannabis_plant_0", CannabisPlant0Block::new);
 		//CANNABIS_PLANT_1 = register("cannabis_plant_1", CannabisPlant1Block::new);

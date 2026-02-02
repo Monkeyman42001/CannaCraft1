@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.Block;
 
 public class GrowTentBlock extends Block {
 	public GrowTentBlock(BlockBehaviour.Properties properties) {
-		super(properties.sound(SoundType.GRAVEL).strength(1f, 10f));
+		super(properties);
 	}
 
 	//@Override

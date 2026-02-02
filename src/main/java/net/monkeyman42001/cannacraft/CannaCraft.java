@@ -3,6 +3,7 @@ package net.monkeyman42001.cannacraft;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
+import net.monkeyman42001.cannacraft.villager.CannacraftModVillagers;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -42,7 +43,7 @@ public class CannaCraft {
 
         CannacraftBlocks.register(modEventBus);
         CannacraftItems.register(modEventBus);
-
+        CannacraftModVillagers.register(modEventBus);
 
 
         // Register the item to a creative tab
@@ -63,7 +64,7 @@ public class CannaCraft {
             event.accept(CannacraftItems.NUG);
         }
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            //event.accept(CannacraftBlocks.GROW_TENT);
+            event.accept(CannacraftBlocks.GROW_TENT);
         }
     }
 
