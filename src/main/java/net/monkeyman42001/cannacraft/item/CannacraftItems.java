@@ -25,7 +25,7 @@ public class CannacraftItems {
 	public static final DeferredItem<Item> LIGHTER;
 	public static final DeferredItem<Item> LIT_JOINT;
 	static {
-		CANNABIS_SEED = ITEMS.register("cannabis_seed", () -> new Item(new Item.Properties()));
+		CANNABIS_SEED = ITEMS.register("cannabis_seed", () -> new CannabisSeedItem(new Item.Properties()));
 		NUG = ITEMS.register("nug", () -> new Item(new Item.Properties()));
 		JOINT = ITEMS.register("joint", () -> new Item(new Item.Properties()));
 		LIGHTER = ITEMS.register("lighter", () -> new Item(new Item.Properties()));
