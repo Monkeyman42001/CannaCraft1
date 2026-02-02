@@ -26,10 +26,10 @@ public class CannacraftItems {
 	public static final DeferredItem<Item> LIT_JOINT;
 	static {
 		CANNABIS_SEED = ITEMS.register("cannabis_seed", () -> new CannabisSeedItem(new Item.Properties()));
-		NUG = ITEMS.register("nug", () -> new Item(new Item.Properties()));
-		JOINT = ITEMS.register("joint", () -> new Item(new Item.Properties()));
-		LIGHTER = ITEMS.register("lighter", () -> new Item(new Item.Properties()));
-		LIT_JOINT = ITEMS.register("lit_joint", () -> new Item(new Item.Properties()));
+		NUG = ITEMS.register("nug", () -> new NugItem(new Item.Properties()));
+		JOINT = ITEMS.register("joint", () -> new JointItem(new Item.Properties()));
+		LIGHTER = ITEMS.register("lighter", () -> new LighterItem(new Item.Properties().durability(100)));
+		LIT_JOINT = ITEMS.register("lit_joint", () -> new LitJointItem(new Item.Properties()));
 	}
 
 	// Start of user code block custom items

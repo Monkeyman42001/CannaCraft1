@@ -1,13 +1,12 @@
 package net.monkeyman42001.cannacraft.procedures;
 
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.network.chat.Component;
 
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
 
@@ -15,40 +14,38 @@ public class LighterRightclickedProcedure {
 	public static void execute(LevelAccessor world, Entity entity, ItemStack itemstack) {
 		if (entity == null)
 			return;
-		if (world instanceof ServerLevel _level) {
-			_level.getServer().getPlayerList().broadcastSystemMessage(Component.literal("lighger right clicked"), false);
+		if (!(world instanceof Level level) || level.isClientSide()) {
+			return;
 		}
-		if (itemstack.getItem() == (entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getItem()) {
-			if (world instanceof ServerLevel _level) {
-				_level.getServer().getPlayerList().broadcastSystemMessage(Component.literal("lighger right clicked right hand"), false);
-			}
-			if ((entity instanceof LivingEntity _livEnt ? _livEnt.getOffhandItem() : ItemStack.EMPTY).getItem() == CannacraftItems.JOINT.get()) {
-				if (entity instanceof LivingEntity _entity) {
-					ItemStack _setstack7 = new ItemStack(CannacraftItems.LIT_JOINT.get()).copy();
-					_setstack7.setCount(1);
-					_entity.setItemInHand(InteractionHand.OFF_HAND, _setstack7);
-					if (_entity instanceof Player _player)
-						_player.getInventory().setChanged();
-				}
-				if (world instanceof ServerLevel _level) {
-					itemstack.hurtAndBreak(1, _level, null, _stkprov -> {
-					});
-				}
-			}
-		} else if (itemstack.getItem() == (entity instanceof LivingEntity _livEnt ? _livEnt.getOffhandItem() : ItemStack.EMPTY).getItem()) {
-			if ((entity instanceof LivingEntity _livEnt ? _livEnt.getMainHandItem() : ItemStack.EMPTY).getItem() == CannacraftItems.JOINT.get()) {
-				if (entity instanceof LivingEntity _entity) {
-					ItemStack _setstack15 = new ItemStack(CannacraftItems.LIT_JOINT.get()).copy();
-					_setstack15.setCount(1);
-					_entity.setItemInHand(InteractionHand.MAIN_HAND, _setstack15);
-					if (_entity instanceof Player _player)
-						_player.getInventory().setChanged();
-				}
-				if (world instanceof ServerLevel _level) {
-					itemstack.hurtAndBreak(1, _level, null, _stkprov -> {
-					});
-				}
-			}
+
+		if (!(entity instanceof LivingEntity livingEntity)) {
+			return;
+		}
+
+		ItemStack mainHand = livingEntity.getMainHandItem();
+		ItemStack offHand = livingEntity.getOffhandItem();
+
+		boolean lighterInMain = itemstack == mainHand;
+		boolean lighterInOff = itemstack == offHand;
+		if (!lighterInMain && !lighterInOff) {
+			return;
+		}
+
+		boolean jointInMain = mainHand.getItem() == CannacraftItems.JOINT.get();
+		boolean jointInOff = offHand.getItem() == CannacraftItems.JOINT.get();
+		if (!jointInMain && !jointInOff) {
+			return;
+		}
+
+		InteractionHand jointHand = jointInMain ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+		ItemStack litJoint = new ItemStack(CannacraftItems.LIT_JOINT.get(), 1);
+		livingEntity.setItemInHand(jointHand, litJoint);
+		if (livingEntity instanceof Player player) {
+			player.getInventory().setChanged();
+		}
+
+		if (!(livingEntity instanceof Player player) || !player.getAbilities().instabuild) {
+			itemstack.hurtAndBreak(1, livingEntity, LivingEntity.getSlotForHand(lighterInMain ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND));
 		}
 	}
 }

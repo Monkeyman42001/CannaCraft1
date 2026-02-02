@@ -65,6 +65,10 @@ public class CannaCraft {
         if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
             event.accept(CannacraftItems.CANNABIS_SEED);
             event.accept(CannacraftItems.NUG);
+            event.accept(CannacraftItems.JOINT);
+            event.accept(CannacraftItems.LIT_JOINT);
+            event.accept(CannacraftItems.LIGHTER);
+
         }
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
             event.accept(CannacraftBlocks.GROW_TENT);
