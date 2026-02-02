@@ -75,12 +75,12 @@ public class CannacraftModTrades {
 
         trades.get(1).add((entity, randomSource) -> new MerchantOffer(
                 new ItemCost(Items.EMERALD, 2),
-                new ItemStack(CannacraftItems.JOINT.get(), 18), 6, 3, 0.05f));
+                new ItemStack(CannacraftItems.JOINT.get(), 1), 6, 3, 0.05f));
 
         trades.get(1).add(sourDieselTrade());
 
-        //trades.get(1).add(blueDreamTrade());
+        trades.get(1).add(blueDreamTrade());
 
-        //trades.get(1).add(ogKushTrade());
+        trades.get(1).add(ogKushTrade());
     }
 }
