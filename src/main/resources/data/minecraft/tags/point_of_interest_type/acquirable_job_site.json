@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "cannacraft:dealer"
+    {
+    "id": "cannacraft:dealer_poi",
+      "required": false
+    }
   ]
 }

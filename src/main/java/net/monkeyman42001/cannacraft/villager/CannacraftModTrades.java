@@ -1,5 +1,6 @@
 package net.monkeyman42001.cannacraft.villager;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.ItemStack;
@@ -70,16 +71,16 @@ public class CannacraftModTrades {
     }
 	@SubscribeEvent
     public static void addTrades(VillagerTradesEvent event) {
-        if (event.getType().equals(CannacraftModVillagers.DEALER.getKey())) {
-            return;
-        }
+        Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
 
-        Map<Integer, List<VillagerTrades.ItemListing>> trades = event.getTrades();
+        trades.get(1).add((entity, randomSource) -> new MerchantOffer(
+                new ItemCost(Items.EMERALD, 2),
+                new ItemStack(CannacraftItems.JOINT.get(), 18), 6, 3, 0.05f));
 
-        trades.get(1).add(sourDieselTrade());
+        //trades.get(1).add(sourDieselTrade());
         
-        trades.get(1).add(blueDreamTrade());
+        //trades.get(1).add(blueDreamTrade());
 
-        trades.get(1).add(ogKushTrade());
+        //trades.get(1).add(ogKushTrade());
     }
 }
