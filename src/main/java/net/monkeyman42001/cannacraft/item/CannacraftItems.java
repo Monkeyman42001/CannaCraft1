@@ -36,7 +36,7 @@ public class CannacraftItems {
 
 	// Start of user code block custom items
 	// End of user code block custom items
-	private static void register(IEventBus eventBus) {
+	public static void register(IEventBus eventBus) {
 		ITEMS.register(eventBus);
 	}
 

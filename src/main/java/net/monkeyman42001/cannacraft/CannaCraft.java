@@ -40,6 +40,11 @@ public class CannaCraft {
         //modEventBus.register(this);
         NeoForge.EVENT_BUS.register(this);
 
+        CannacraftBlocks.register(modEventBus);
+        CannacraftItems.register(modEventBus);
+
+
+
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
