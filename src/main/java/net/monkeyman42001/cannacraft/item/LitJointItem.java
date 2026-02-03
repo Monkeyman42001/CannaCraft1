@@ -57,7 +57,7 @@ public class LitJointItem extends Item {
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
 		Strain strain = stack.get(CannacraftDataComponents.STRAIN.get());
 		if (strain != null && !strain.name().isBlank()) {
-			tooltipComponents.add(Component.literal("Strain: " + strain.name()));
+			tooltipComponents.add(Component.literal("Strain: ").append(strain.coloredName()));
 			tooltipComponents.add(Component.literal("THC %: " + strain.thcPercentage()));
 			tooltipComponents.add(Component.literal("Terpene %: " + strain.terpenePercentage()));
 		} else {

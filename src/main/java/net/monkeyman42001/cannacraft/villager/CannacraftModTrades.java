@@ -16,11 +16,7 @@ import net.monkeyman42001.cannacraft.component.Strain;
 import java.util.List;
 
 public class CannacraftModTrades {
-
-    private record StrainTrade(
-            String name,
-            float thc,
-            float terpene,
+    private record TradeConfig(
             ItemCost cost,
             int maxUses,
             int villagerXp,
@@ -28,27 +24,27 @@ public class CannacraftModTrades {
             int level
     ) {}
 
-    private static final StrainTrade[] STRAIN_TRADES = new StrainTrade[] {
-            new StrainTrade("Sour Diesel", 19.0f, 1.6f, new ItemCost(Items.EMERALD, 1), 16, 2, 0.05F, 1),
-            new StrainTrade("Blue Dream", 19.2f, 1.9f, new ItemCost(Items.WHEAT, 1), 16, 2, 0.05F, 1),
-            new StrainTrade("OG Kush", 19.1f, 1.35f, new ItemCost(Items.DIAMOND, 1), 12, 5, 0.10F, 1),
-            new StrainTrade("Girl Scout Cookies", 19.1f, 1.4f, new ItemCost(Items.EMERALD, 2), 12, 5, 0.08F, 2),
-            new StrainTrade("Gelato", 18.7f, 1.0f, new ItemCost(Items.EMERALD, 3), 12, 5, 0.08F, 2),
-            new StrainTrade("Gorilla Glue", 21.3f, 1.53f, new ItemCost(Items.EMERALD, 4), 10, 8, 0.10F, 3),
-            new StrainTrade("Granddaddy Purple", 20.0f, 1.07f, new ItemCost(Items.EMERALD, 3), 10, 8, 0.10F, 3)
+    private static final TradeConfig[] STRAIN_TRADE_CONFIGS = new TradeConfig[] {
+            new TradeConfig(new ItemCost(Items.EMERALD, 1), 16, 2, 0.05F, 1),
+            new TradeConfig(new ItemCost(Items.WHEAT, 1), 16, 2, 0.05F, 1),
+            new TradeConfig(new ItemCost(Items.DIAMOND, 1), 12, 5, 0.10F, 1),
+            new TradeConfig(new ItemCost(Items.EMERALD, 2), 12, 5, 0.08F, 2),
+            new TradeConfig(new ItemCost(Items.EMERALD, 3), 12, 5, 0.08F, 2),
+            new TradeConfig(new ItemCost(Items.EMERALD, 4), 10, 8, 0.10F, 3),
+            new TradeConfig(new ItemCost(Items.EMERALD, 3), 10, 8, 0.10F, 3)
     };
 
-    private static VillagerTrades.ItemListing buildStrainTrade(StrainTrade trade) {
+    private static VillagerTrades.ItemListing buildStrainTrade(Strain strain, TradeConfig config) {
         return (trader, random) -> {
             ItemStack result = new ItemStack(CannacraftItems.CANNABIS_SEED.get(), 1);
-            CannabisSeedItem.setStrain(result, new Strain(trade.name, trade.thc, trade.terpene));
+            CannabisSeedItem.setStrain(result, strain);
 
             return new MerchantOffer(
-                    trade.cost,
+                    config.cost(),
                     result,
-                    trade.maxUses,
-                    trade.villagerXp,
-                    trade.priceMultiplier
+                    config.maxUses(),
+                    config.villagerXp(),
+                    config.priceMultiplier()
             );
         };
     }
@@ -60,8 +56,13 @@ public class CannacraftModTrades {
                 new ItemCost(Items.EMERALD, 2),
                 new ItemStack(CannacraftItems.JOINT.get(), 1), 6, 3, 0.05f));
 
-        for (StrainTrade trade : STRAIN_TRADES) {
-            trades.get(trade.level).add(buildStrainTrade(trade));
+        Strain[] strains = Strain.DEFAULT_STRAINS;
+        if (strains.length != STRAIN_TRADE_CONFIGS.length) {
+            throw new IllegalStateException("Strain list and trade config list must match length.");
+        }
+        for (int i = 0; i < strains.length; i++) {
+            TradeConfig config = STRAIN_TRADE_CONFIGS[i];
+            trades.get(config.level()).add(buildStrainTrade(strains[i], config));
         }
     }
 }

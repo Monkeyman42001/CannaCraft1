@@ -31,6 +31,7 @@ public class CannabisPlantBlockEntity extends BlockEntity {
 			tag.putString("strain_name", strain.name());
 			tag.putFloat("strain_thc", strain.thcPercentage());
 			tag.putFloat("strain_terpene", strain.terpenePercentage());
+			tag.putInt("strain_color", strain.colorRgb());
 		}
 	}
 
@@ -41,7 +42,8 @@ public class CannabisPlantBlockEntity extends BlockEntity {
 			String name = tag.getString("strain_name");
 			float thc = tag.getFloat("strain_thc");
 			float terpene = tag.getFloat("strain_terpene");
-			this.strain = new Strain(name, thc, terpene);
+			int color = tag.contains("strain_color") ? tag.getInt("strain_color") : 0xFFFFFF;
+			this.strain = new Strain(name, thc, terpene, color);
 		} else {
 			this.strain = null;
 		}
