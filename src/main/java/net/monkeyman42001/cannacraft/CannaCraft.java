@@ -74,6 +74,7 @@ public class CannaCraft {
             event.accept(CannacraftItems.JOINT);
             event.accept(CannacraftItems.LIT_JOINT);
             event.accept(CannacraftItems.LIGHTER);
+            event.accept(CannacraftItems.MATCHBOX);
 
         }
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {

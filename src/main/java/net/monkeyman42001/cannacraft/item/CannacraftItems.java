@@ -24,6 +24,7 @@ public class CannacraftItems {
 	public static final DeferredItem<Item> EXTRACT;
 	public static final DeferredItem<Item> JOINT;
 	public static final DeferredItem<Item> LIGHTER;
+	public static final DeferredItem<Item> MATCHBOX;
 	public static final DeferredItem<Item> LIT_JOINT;
 	static {
 		CANNABIS_SEED = ITEMS.register("cannabis_seed", () -> new CannabisSeedItem(new Item.Properties()));
@@ -31,6 +32,7 @@ public class CannacraftItems {
 		EXTRACT = ITEMS.register("extract", () -> new ExtractItem(new Item.Properties().stacksTo(16)));
 		JOINT = ITEMS.register("joint", () -> new JointItem(new Item.Properties()));
 		LIGHTER = ITEMS.register("lighter", () -> new LighterItem(new Item.Properties().durability(100)));
+		MATCHBOX = ITEMS.register("matchbox", () -> new LighterItem(new Item.Properties().durability(10)));
 		LIT_JOINT = ITEMS.register("lit_joint", () -> new LitJointItem(new Item.Properties()));
 	}
 
