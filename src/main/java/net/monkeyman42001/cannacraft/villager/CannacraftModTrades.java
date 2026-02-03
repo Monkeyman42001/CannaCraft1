@@ -52,10 +52,6 @@ public class CannacraftModTrades {
     public static void addTrades(VillagerTradesEvent event) {
         Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
 
-        trades.get(1).add((entity, randomSource) -> new MerchantOffer(
-                new ItemCost(Items.EMERALD, 2),
-                new ItemStack(CannacraftItems.JOINT.get(), 1), 6, 3, 0.05f));
-
         Strain[] strains = Strain.DEFAULT_STRAINS;
         if (strains.length != STRAIN_TRADE_CONFIGS.length) {
             throw new IllegalStateException("Strain list and trade config list must match length.");
