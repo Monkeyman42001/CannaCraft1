@@ -7,6 +7,8 @@ import net.minecraft.world.level.Level;
 //import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.InteractionResult;
@@ -20,8 +22,13 @@ import net.monkeyman42001.cannacraft.component.Strain;
 import java.util.List;
 
 public class LitJointItem extends Item {
+	private static final int BURN_TICKS_PER_DAMAGE = 2;
+	private static final int BURN_DAMAGE = 1;
+	private static final int HIT_DAMAGE = 120;
+	private static final int USE_DAMAGE = 120;
+
 	public LitJointItem(Item.Properties properties) {
-		super(properties.durability(100));
+		super(properties.durability(1200));
 	}
 
 	@Override
@@ -50,7 +57,62 @@ public class LitJointItem extends Item {
 	public ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
 		ItemStack retval = super.finishUsingItem(itemstack, world, entity);
 		LitJointSmokeEffectProcedure.execute(entity, itemstack);
+		if (!world.isClientSide) {
+			int nextDamage = itemstack.getDamageValue() + USE_DAMAGE;
+			if (nextDamage >= itemstack.getMaxDamage()) {
+				itemstack.shrink(1);
+			} else {
+				itemstack.setDamageValue(nextDamage);
+			}
+		}
 		return retval;
+	}
+
+	@Override
+	public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
+		super.inventoryTick(itemstack, world, entity, slot, selected);
+		if (!world.isClientSide && entity instanceof LivingEntity livingEntity) {
+			if (livingEntity.tickCount % BURN_TICKS_PER_DAMAGE == 0) {
+				int nextDamage = itemstack.getDamageValue() + BURN_DAMAGE;
+				if (nextDamage >= itemstack.getMaxDamage()) {
+					itemstack.shrink(1);
+					// No break event needed here; stack shrink handles removal.
+				} else {
+					itemstack.setDamageValue(nextDamage);
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean hurtEnemy(ItemStack itemstack, LivingEntity target, LivingEntity attacker) {
+		if (!attacker.level().isClientSide) {
+			int nextDamage = itemstack.getDamageValue() + HIT_DAMAGE;
+			if (nextDamage >= itemstack.getMaxDamage()) {
+				itemstack.shrink(1);
+			} else {
+				itemstack.setDamageValue(nextDamage);
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onLeftClickEntity(ItemStack itemstack, Player player, Entity entity) {
+		if (!player.level().isClientSide) {
+			int nextDamage = itemstack.getDamageValue() + HIT_DAMAGE;
+			if (nextDamage >= itemstack.getMaxDamage()) {
+				itemstack.shrink(1);
+			} else {
+				itemstack.setDamageValue(nextDamage);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return slotChanged || oldStack.getItem() != newStack.getItem();
 	}
 
 	@Override

@@ -1,12 +1,13 @@
 package net.monkeyman42001.cannacraft;
 
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.monkeyman42001.cannacraft.block.CannacraftBlocks;
 import net.monkeyman42001.cannacraft.block.CannacraftModBlockEntities;
 import net.monkeyman42001.cannacraft.component.CannacraftDataComponents;
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
+import net.monkeyman42001.cannacraft.registry.CannacraftCreativeTabs;
 import net.monkeyman42001.cannacraft.registry.CannacraftMenus;
 import net.monkeyman42001.cannacraft.villager.CannacraftModVillagers;
 import org.slf4j.Logger;
@@ -24,7 +25,6 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 
@@ -52,12 +52,9 @@ public class CannaCraft {
         CannacraftBlocks.register(modEventBus);
         CannacraftModBlockEntities.register(modEventBus);
         CannacraftItems.register(modEventBus);
+        CannacraftCreativeTabs.register(modEventBus);
         CannacraftMenus.register(modEventBus);
         CannacraftModVillagers.register(modEventBus);
-
-
-        // Register the item to a creative tab
-        modEventBus.addListener(this::addCreative);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -65,24 +62,6 @@ public class CannaCraft {
 
     private void commonSetup(FMLCommonSetupEvent event) {
 
-    }
-
-    // Add the example block item to the building blocks tab
-    private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
-            event.accept(CannacraftItems.CANNABIS_SEED);
-            event.accept(CannacraftItems.NUG);
-            event.accept(CannacraftItems.EXTRACT);
-            event.accept(CannacraftItems.JOINT);
-            event.accept(CannacraftItems.LIT_JOINT);
-            event.accept(CannacraftItems.LIGHTER);
-            event.accept(CannacraftItems.MATCHBOX);
-
-        }
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(CannacraftBlocks.GROW_TENT);
-            event.accept(CannacraftBlocks.EXTRACTOR);
-        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -99,12 +78,12 @@ public class CannaCraft {
             event.enqueueWork(() -> ItemProperties.register(
                 CannacraftItems.LIT_JOINT.get(),
                 ResourceLocation.fromNamespaceAndPath(CannaCraft.MOD_ID, "left_hand"),
-                (stack, level, entity, seed) -> (entity != null && entity.getOffhandItem() == stack) ? 1.0F : 0.0F
+                (stack, level, entity, seed) -> (entity != null && ItemStack.isSameItemSameComponents(entity.getOffhandItem(), stack)) ? 1.0F : 0.0F
             ));
             event.enqueueWork(() -> ItemProperties.register(
                 CannacraftItems.JOINT.get(),
                 ResourceLocation.fromNamespaceAndPath(CannaCraft.MOD_ID, "left_hand"),
-                (stack, level, entity, seed) -> (entity != null && entity.getOffhandItem() == stack) ? 1.0F : 0.0F
+                (stack, level, entity, seed) -> (entity != null && ItemStack.isSameItemSameComponents(entity.getOffhandItem(), stack)) ? 1.0F : 0.0F
             ));
         }
 
