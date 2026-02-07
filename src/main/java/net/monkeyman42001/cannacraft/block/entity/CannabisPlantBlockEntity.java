@@ -8,10 +8,12 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.monkeyman42001.cannacraft.block.CannacraftModBlockEntities;
+import net.monkeyman42001.cannacraft.component.LineageNode;
 import net.monkeyman42001.cannacraft.component.Strain;
 
 public class CannabisPlantBlockEntity extends BlockEntity {
 	private Strain strain;
+	private LineageNode lineage;
 
 	public CannabisPlantBlockEntity(BlockPos pos, BlockState state) {
 		super(CannacraftModBlockEntities.CANNABIS_PLANT.get(), pos, state);
@@ -26,6 +28,15 @@ public class CannabisPlantBlockEntity extends BlockEntity {
 		setChanged();
 	}
 
+	public LineageNode getLineage() {
+		return lineage;
+	}
+
+	public void setLineage(LineageNode lineage) {
+		this.lineage = lineage;
+		setChanged();
+	}
+
 	@Override
 	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 		super.saveAdditional(tag, provider);
@@ -33,6 +44,11 @@ public class CannabisPlantBlockEntity extends BlockEntity {
 			Strain.CODEC.encodeStart(NbtOps.INSTANCE, strain)
 					.result()
 					.ifPresent(value -> tag.put("strain", (Tag) value));
+		}
+		if (lineage != null) {
+			LineageNode.CODEC.encodeStart(NbtOps.INSTANCE, lineage)
+					.result()
+					.ifPresent(value -> tag.put("lineage", (Tag) value));
 		}
 	}
 
@@ -43,8 +59,16 @@ public class CannabisPlantBlockEntity extends BlockEntity {
 			Tag strainTag = tag.get("strain");
 			if (strainTag != null) {
 				this.strain = Strain.CODEC.parse(NbtOps.INSTANCE, strainTag).result().orElse(null);
-				return;
 			}
+		}
+		if (tag.contains("lineage")) {
+			Tag lineageTag = tag.get("lineage");
+			if (lineageTag != null) {
+				this.lineage = LineageNode.CODEC.parse(NbtOps.INSTANCE, lineageTag).result().orElse(null);
+			}
+		}
+		if (this.strain != null) {
+			return;
 		}
 		if (tag.contains("strain_name")) {
 			String name = tag.getString("strain_name");

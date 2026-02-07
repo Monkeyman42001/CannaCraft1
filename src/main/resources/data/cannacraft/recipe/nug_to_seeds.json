@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "cannacraft:nug"
+    }
+  ],
+  "result": {
+    "id": "cannacraft:cannabis_seed",
+    "count": 2
+  }
+}

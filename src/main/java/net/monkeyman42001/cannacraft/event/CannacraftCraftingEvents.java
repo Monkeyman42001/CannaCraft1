@@ -17,26 +17,53 @@ public class CannacraftCraftingEvents {
 	@SubscribeEvent
 	public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
 		ItemStack result = event.getCrafting();
-		if (result.getItem() != CannacraftItems.JOINT.get()) {
+		Container inventory = event.getInventory();
+		if (result.getItem() == CannacraftItems.JOINT.get()) {
+			Map<String, Strain> uniqueStrains = new LinkedHashMap<>();
+			for (int i = 0; i < inventory.getContainerSize(); i++) {
+				ItemStack stack = inventory.getItem(i);
+				if (stack.getItem() == CannacraftItems.NUG.get()) {
+					Strain strain = stack.get(CannacraftDataComponents.STRAIN.get());
+					if (strain != null && !strain.name().isBlank()) {
+						uniqueStrains.putIfAbsent(strain.name(), strain);
+					}
+				}
+			}
+
+			if (!uniqueStrains.isEmpty()) {
+				List<Strain> hodgepodge = new ArrayList<>(uniqueStrains.values());
+				result.set(CannacraftDataComponents.HODGEPODGE.get(), hodgepodge);
+				result.set(CannacraftDataComponents.STRAIN.get(), hodgepodge.get(0));
+			}
 			return;
 		}
 
-		Container inventory = event.getInventory();
-		Map<String, Strain> uniqueStrains = new LinkedHashMap<>();
-		for (int i = 0; i < inventory.getContainerSize(); i++) {
-			ItemStack stack = inventory.getItem(i);
-			if (stack.getItem() == CannacraftItems.NUG.get()) {
-				Strain strain = stack.get(CannacraftDataComponents.STRAIN.get());
-				if (strain != null && !strain.name().isBlank()) {
-					uniqueStrains.putIfAbsent(strain.name(), strain);
+		if (result.getItem() == CannacraftItems.CANNABIS_SEED.get() && result.getCount() == 2) {
+			ItemStack nug = ItemStack.EMPTY;
+			int nugCount = 0;
+			int otherCount = 0;
+			for (int i = 0; i < inventory.getContainerSize(); i++) {
+				ItemStack stack = inventory.getItem(i);
+				if (stack.isEmpty()) {
+					continue;
+				}
+				if (stack.getItem() == CannacraftItems.NUG.get()) {
+					nug = stack;
+					nugCount += stack.getCount();
+				} else {
+					otherCount += stack.getCount();
 				}
 			}
-		}
-
-		if (!uniqueStrains.isEmpty()) {
-			List<Strain> hodgepodge = new ArrayList<>(uniqueStrains.values());
-			result.set(CannacraftDataComponents.HODGEPODGE.get(), hodgepodge);
-			result.set(CannacraftDataComponents.STRAIN.get(), hodgepodge.get(0));
+			if (nugCount == 1 && otherCount == 0 && !nug.isEmpty()) {
+				var strain = nug.get(CannacraftDataComponents.STRAIN.get());
+				if (strain != null && !strain.name().isBlank()) {
+					result.set(CannacraftDataComponents.STRAIN.get(), strain);
+				}
+				var lineage = nug.get(CannacraftDataComponents.LINEAGE.get());
+				if (lineage != null) {
+					result.set(CannacraftDataComponents.LINEAGE.get(), lineage);
+				}
+			}
 		}
 	}
 }

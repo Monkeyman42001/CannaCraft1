@@ -149,6 +149,10 @@ public class CannabisSeedItem extends Item {
             if (strain != null) {
                 plantEntity.setStrain(strain);
             }
+            var lineage = getLineage(stack);
+            if (lineage != null) {
+                plantEntity.setLineage(lineage);
+            }
         }
 
         if (player == null || !player.getAbilities().instabuild) {

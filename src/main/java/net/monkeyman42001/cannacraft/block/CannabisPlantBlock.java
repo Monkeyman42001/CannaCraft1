@@ -72,9 +72,11 @@ public class CannabisPlantBlock extends CropBlock implements EntityBlock {
 	public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
 		List<ItemStack> drops = new ArrayList<>();
 		Strain strain = null;
+		net.monkeyman42001.cannacraft.component.LineageNode lineage = null;
 		BlockEntity blockEntity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 		if (blockEntity instanceof CannabisPlantBlockEntity plantEntity) {
 			strain = plantEntity.getStrain();
+			lineage = plantEntity.getLineage();
 		}
 
 		int age = getAge(state);
@@ -86,6 +88,9 @@ public class CannabisPlantBlock extends CropBlock implements EntityBlock {
 				if (strain != null) {
 					seed.set(CannacraftDataComponents.STRAIN.get(), strain);
 				}
+				if (lineage != null) {
+					seed.set(CannacraftDataComponents.LINEAGE.get(), lineage);
+				}
 				drops.add(seed);
 			}
 			for (int i = 0; i < nugCount; i++) {
@@ -93,12 +98,18 @@ public class CannabisPlantBlock extends CropBlock implements EntityBlock {
 				if (strain != null) {
 					nug.set(CannacraftDataComponents.STRAIN.get(), strain);
 				}
+				if (lineage != null) {
+					nug.set(CannacraftDataComponents.LINEAGE.get(), lineage);
+				}
 				drops.add(nug);
 			}
 		} else {
 			ItemStack seed = new ItemStack(CannacraftItems.CANNABIS_SEED.get());
 			if (strain != null) {
 				seed.set(CannacraftDataComponents.STRAIN.get(), strain);
+			}
+			if (lineage != null) {
+				seed.set(CannacraftDataComponents.LINEAGE.get(), lineage);
 			}
 			drops.add(seed);
 		}
