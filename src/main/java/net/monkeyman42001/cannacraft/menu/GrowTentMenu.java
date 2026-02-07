@@ -7,9 +7,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.monkeyman42001.cannacraft.item.CannacraftItems;
 import net.monkeyman42001.cannacraft.registry.CannacraftMenus;
+import net.monkeyman42001.cannacraft.block.entity.GrowTentBlockEntity;
 
 public class GrowTentMenu extends AbstractContainerMenu {
 	private static final int SLOT_SEED_LEFT = 0;
@@ -22,10 +25,16 @@ public class GrowTentMenu extends AbstractContainerMenu {
 	private static final int HOTBAR_END = 39;
 
 	private final Container container;
+	private BlockPos blockPos;
 
 	public GrowTentMenu(int id, Inventory playerInventory, Container container) {
 		super(CannacraftMenus.GROW_TENT.get(), id);
 		this.container = container;
+		if (container instanceof BlockEntity blockEntity) {
+			this.blockPos = blockEntity.getBlockPos();
+		} else {
+			this.blockPos = BlockPos.ZERO;
+		}
 
 		addGrowTentSlots();
 		addPlayerSlots(playerInventory);
@@ -37,7 +46,7 @@ public class GrowTentMenu extends AbstractContainerMenu {
 
 	public GrowTentMenu(int id, Inventory playerInventory, RegistryFriendlyByteBuf buf) {
 		this(id, playerInventory, new net.minecraft.world.SimpleContainer(SLOT_COUNT));
-		buf.readBlockPos();
+		this.blockPos = buf.readBlockPos();
 	}
 
 	private void addGrowTentSlots() {
@@ -58,6 +67,16 @@ public class GrowTentMenu extends AbstractContainerMenu {
 			public boolean mayPlace(ItemStack stack) {
 				return false;
 			}
+
+			@Override
+			public void onTake(Player player, ItemStack stack) {
+				super.onTake(player, stack);
+				container.removeItem(SLOT_SEED_LEFT, 1);
+				container.removeItem(SLOT_SEED_RIGHT, 1);
+				if (container instanceof GrowTentBlockEntity growTent) {
+					growTent.updateOutput();
+				}
+			}
 		});
 	}
 
@@ -75,6 +94,10 @@ public class GrowTentMenu extends AbstractContainerMenu {
 	@Override
 	public boolean stillValid(Player player) {
 		return container.stillValid(player);
+	}
+
+	public BlockPos getBlockPos() {
+		return blockPos;
 	}
 
 	@Override

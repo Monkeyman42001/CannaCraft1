@@ -19,8 +19,14 @@ import net.monkeyman42001.cannacraft.block.CannacraftModBlockEntities;
 import net.monkeyman42001.cannacraft.menu.GrowTentMenu;
 
 public class GrowTentBlockEntity extends BlockEntity implements Container, MenuProvider {
+	private static final int SLOT_SEED_LEFT = 0;
+	private static final int SLOT_SEED_RIGHT = 1;
+	private static final int SLOT_OUTPUT = 2;
 	private static final int SLOT_COUNT = 3;
+	private static final String TAG_BREED_NAME = "BreedName";
 	private final NonNullList<ItemStack> items = NonNullList.withSize(SLOT_COUNT, ItemStack.EMPTY);
+	private String breedName = "";
+	private boolean updatingOutput;
 
 	public GrowTentBlockEntity(BlockPos pos, BlockState state) {
 		super(CannacraftModBlockEntities.GROW_TENT.get(), pos, state);
@@ -30,12 +36,14 @@ public class GrowTentBlockEntity extends BlockEntity implements Container, MenuP
 	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 		super.saveAdditional(tag, provider);
 		ContainerHelper.saveAllItems(tag, items, provider);
+		tag.putString(TAG_BREED_NAME, breedName);
 	}
 
 	@Override
 	protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
 		super.loadAdditional(tag, provider);
 		ContainerHelper.loadAllItems(tag, items, provider);
+		breedName = tag.getString(TAG_BREED_NAME);
 	}
 
 	@Override
@@ -73,6 +81,9 @@ public class GrowTentBlockEntity extends BlockEntity implements Container, MenuP
 		ItemStack stack = ContainerHelper.removeItem(items, slot, amount);
 		if (!stack.isEmpty()) {
 			setChanged();
+			if (slot == SLOT_SEED_LEFT || slot == SLOT_SEED_RIGHT) {
+				updateOutput();
+			}
 		}
 		return stack;
 	}
@@ -89,6 +100,9 @@ public class GrowTentBlockEntity extends BlockEntity implements Container, MenuP
 			stack.setCount(getMaxStackSize());
 		}
 		setChanged();
+		if (!updatingOutput && (slot == SLOT_SEED_LEFT || slot == SLOT_SEED_RIGHT)) {
+			updateOutput();
+		}
 	}
 
 	@Override
@@ -100,5 +114,66 @@ public class GrowTentBlockEntity extends BlockEntity implements Container, MenuP
 	@Override
 	public void clearContent() {
 		items.clear();
+	}
+
+	public void setBreedName(String name) {
+		String trimmed = name == null ? "" : name.trim();
+		if (!trimmed.equals(breedName)) {
+			breedName = trimmed;
+			updateOutput();
+		}
+	}
+
+	public String getBreedName() {
+		return breedName;
+	}
+
+	public void updateOutput() {
+		if (level == null || level.isClientSide()) {
+			return;
+		}
+		updatingOutput = true;
+		try {
+			ItemStack output = createBreedResult();
+			items.set(SLOT_OUTPUT, output);
+			setChanged();
+		} finally {
+			updatingOutput = false;
+		}
+	}
+
+	private ItemStack createBreedResult() {
+		ItemStack left = items.get(SLOT_SEED_LEFT);
+		ItemStack right = items.get(SLOT_SEED_RIGHT);
+		if (left.isEmpty() || right.isEmpty()) {
+			return ItemStack.EMPTY;
+		}
+		if (breedName.isBlank()) {
+			return ItemStack.EMPTY;
+		}
+		if (left.getItem() != net.monkeyman42001.cannacraft.item.CannacraftItems.CANNABIS_SEED.get()
+				|| right.getItem() != net.monkeyman42001.cannacraft.item.CannacraftItems.CANNABIS_SEED.get()) {
+			return ItemStack.EMPTY;
+		}
+		var leftStrain = net.monkeyman42001.cannacraft.item.CannabisSeedItem.getStrain(left);
+		var rightStrain = net.monkeyman42001.cannacraft.item.CannabisSeedItem.getStrain(right);
+		if (leftStrain == null || rightStrain == null) {
+			return ItemStack.EMPTY;
+		}
+		if (leftStrain.name().equalsIgnoreCase(rightStrain.name())) {
+			return ItemStack.EMPTY;
+		}
+
+		var newStrain = new net.monkeyman42001.cannacraft.component.Strain(
+				breedName,
+				leftStrain.thcPercentage(),
+				leftStrain.terpenePercentage(),
+				leftStrain.colorRgb(),
+				leftStrain.trade(),
+				leftStrain.effects()
+		);
+		ItemStack result = new ItemStack(net.monkeyman42001.cannacraft.item.CannacraftItems.CANNABIS_SEED.get());
+		net.monkeyman42001.cannacraft.item.CannabisSeedItem.setStrain(result, newStrain);
+		return result;
 	}
 }
