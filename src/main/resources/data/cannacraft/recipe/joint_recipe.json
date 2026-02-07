@@ -1,19 +1,20 @@
 {
-  "type": "minecraft:crafting_shaped",
+  "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "pattern": [
-    "aaa",
-    "bbb",
-    "aaa"
-  ],
-  "key": {
-    "a": {
+  "ingredients": [
+    {
       "item": "minecraft:paper"
     },
-    "b": {
-      "item": "cannacraft:nug"
+    {
+      "item": "cannacraft:ground_cannabis"
+    },
+    {
+      "item": "cannacraft:ground_cannabis"
+    },
+    {
+      "item": "cannacraft:ground_cannabis"
     }
-  },
+  ],
   "result": {
     "id": "cannacraft:joint",
     "count": 1

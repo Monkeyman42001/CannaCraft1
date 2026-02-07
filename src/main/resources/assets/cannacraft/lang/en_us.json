@@ -1,6 +1,7 @@
 {
   "item.cannacraft.cannabis_seed": "Cannabis Seed",
   "item.cannacraft.nug": "Nug",
+  "item.cannacraft.ground_cannabis": "Ground Cannabis",
   "item.cannacraft.extract": "Extract",
   "item.cannacraft.cannabis_plant_0": "Cannabis Plant 0",
   "item.cannacraft.cannabis_plant_1": "Cannabis Plant 0",
@@ -8,6 +9,7 @@
   "item.cannacraft.cannabis_plant_3": "Cannabis Plant 0",
   "item.cannacraft.cannabis_plant_4": "Cannabis Plant 0",
   "item.cannacraft.joint": "Joint",
+  "item.cannacraft.grinder": "Grinder",
   "item.cannacraft.lighter": "Lighter",
   "item.cannacraft.matchbox": "Matchbox",
   "block.cannacraft.grow_tent": "Grow Tent",

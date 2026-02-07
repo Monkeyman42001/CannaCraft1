@@ -9,8 +9,8 @@ import net.monkeyman42001.cannacraft.component.Strain;
 
 import java.util.List;
 
-public class  NugItem extends Item {
-	public NugItem(Properties properties) {
+public class GroundCannabisItem extends Item {
+	public GroundCannabisItem(Properties properties) {
 		super(properties);
 	}
 

@@ -11,6 +11,7 @@ import net.monkeyman42001.cannacraft.item.CannacraftItems;
 import net.monkeyman42001.cannacraft.network.CannacraftNetworking;
 import net.monkeyman42001.cannacraft.registry.CannacraftCreativeTabs;
 import net.monkeyman42001.cannacraft.registry.CannacraftMenus;
+import net.monkeyman42001.cannacraft.registry.CannacraftRecipeSerializers;
 import net.monkeyman42001.cannacraft.villager.CannacraftModVillagers;
 import org.slf4j.Logger;
 
@@ -54,6 +55,7 @@ public class CannaCraft {
         CannacraftItems.register(modEventBus);
         CannacraftCreativeTabs.register(modEventBus);
         CannacraftMenus.register(modEventBus);
+        CannacraftRecipeSerializers.register(modEventBus);
         CannacraftModVillagers.register(modEventBus);
 
         modEventBus.addListener(CannacraftNetworking::registerPayloadHandlers);

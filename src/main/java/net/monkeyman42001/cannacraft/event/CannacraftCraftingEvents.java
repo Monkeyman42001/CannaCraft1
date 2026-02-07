@@ -22,7 +22,8 @@ public class CannacraftCraftingEvents {
 			Map<String, Strain> uniqueStrains = new LinkedHashMap<>();
 			for (int i = 0; i < inventory.getContainerSize(); i++) {
 				ItemStack stack = inventory.getItem(i);
-				if (stack.getItem() == CannacraftItems.NUG.get()) {
+				if (stack.getItem() == CannacraftItems.NUG.get()
+						|| stack.getItem() == CannacraftItems.GROUND_CANNABIS.get()) {
 					Strain strain = stack.get(CannacraftDataComponents.STRAIN.get());
 					if (strain != null && !strain.name().isBlank()) {
 						uniqueStrains.putIfAbsent(strain.name(), strain);
